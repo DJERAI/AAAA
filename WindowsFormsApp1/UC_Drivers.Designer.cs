@@ -38,7 +38,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -58,6 +57,9 @@
             // 
             // textBox1
             // 
+            this.textBox1.BackColor = System.Drawing.Color.MediumOrchid;
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBox1.ForeColor = System.Drawing.SystemColors.Control;
             this.textBox1.Location = new System.Drawing.Point(155, 3);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(290, 20);
@@ -65,6 +67,9 @@
             // 
             // textBox2
             // 
+            this.textBox2.BackColor = System.Drawing.Color.MediumOrchid;
+            this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBox2.ForeColor = System.Drawing.SystemColors.Control;
             this.textBox2.Location = new System.Drawing.Point(271, 48);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(174, 20);
@@ -83,10 +88,12 @@
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(258, 84);
+            this.dateTimePicker1.CalendarTitleForeColor = System.Drawing.Color.Azure;
+            this.dateTimePicker1.Location = new System.Drawing.Point(271, 83);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(187, 20);
+            this.dateTimePicker1.Size = new System.Drawing.Size(174, 20);
             this.dateTimePicker1.TabIndex = 6;
+            this.dateTimePicker1.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
             // 
             // label2
             // 
@@ -106,9 +113,9 @@
             this.label3.ForeColor = System.Drawing.SystemColors.Control;
             this.label3.Location = new System.Drawing.Point(3, 80);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(251, 25);
+            this.label3.Size = new System.Drawing.Size(264, 25);
             this.label3.TabIndex = 8;
-            this.label3.Text = "Введите дату рождения";
+            this.label3.Text = "Выберите дату рождения";
             // 
             // button1
             // 
@@ -130,27 +137,12 @@
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.Font = new System.Drawing.Font("Nirmala UI", 14.25F, System.Drawing.FontStyle.Bold);
             this.button2.ForeColor = System.Drawing.SystemColors.Control;
-            this.button2.Location = new System.Drawing.Point(479, 35);
+            this.button2.Location = new System.Drawing.Point(345, 174);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(269, 40);
             this.button2.TabIndex = 15;
             this.button2.Text = "Поиск водителя по ФИО";
             this.button2.UseVisualStyleBackColor = true;
-
-            // 
-            // button3
-            // 
-            this.button3.FlatAppearance.BorderSize = 0;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Font = new System.Drawing.Font("Nirmala UI", 14.25F, System.Drawing.FontStyle.Bold);
-            this.button3.ForeColor = System.Drawing.SystemColors.Control;
-            this.button3.Location = new System.Drawing.Point(323, 214);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(337, 40);
-            this.button3.TabIndex = 16;
-            this.button3.Text = "Показать всех водителей";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
             // 
@@ -167,9 +159,12 @@
             // 
             // textBox5
             // 
-            this.textBox5.Location = new System.Drawing.Point(754, 43);
+            this.textBox5.BackColor = System.Drawing.Color.MediumOrchid;
+            this.textBox5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBox5.ForeColor = System.Drawing.SystemColors.Control;
+            this.textBox5.Location = new System.Drawing.Point(361, 205);
             this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(169, 20);
+            this.textBox5.Size = new System.Drawing.Size(238, 20);
             this.textBox5.TabIndex = 18;
             this.textBox5.TextChanged += new System.EventHandler(this.textBox5_TextChanged);
             // 
@@ -185,7 +180,6 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(10)))), ((int)(((byte)(46)))));
             this.Controls.Add(this.textBox5);
             this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -215,7 +209,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;

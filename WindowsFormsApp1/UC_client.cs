@@ -138,7 +138,7 @@ namespace WindowsFormsApp1
 
 
             //Ширина полей
-            dataGridView1.Columns[0].FillWeight = 150;
+            dataGridView1.Columns[0].FillWeight = 10;
             dataGridView1.Columns[1].FillWeight = 150;
             dataGridView1.Columns[2].FillWeight = 150;
 
