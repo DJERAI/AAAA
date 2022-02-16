@@ -107,7 +107,7 @@ namespace WindowsFormsApp1
         public void GetListCar()
         {
             //Запрос для вывода строк в БД
-            string commandStr = $"SELECT t_Cars.NumberTS AS 'Номер автомобиля', t_Marka.titleMarks AS 'Марка автомобиля', t_Model.titleModel AS 'Модель автомобиля' FROM (t_Marka INNER JOIN t_Model ON t_Marka.idMarka = t_Model.idMarka) INNER JOIN t_Cars ON t_Model.idModel = t_Cars.idModel;"; 
+            string commandStr = $"SELECT t_Cars.NumberTS AS 'Номер', t_Marka.titleMarks AS 'Марка', t_Model.titleModel AS 'Модель' FROM (t_Marka INNER JOIN t_Model ON t_Marka.idMarka = t_Model.idMarka) INNER JOIN t_Cars ON t_Model.idModel = t_Cars.idModel;"; 
             //Открываем соединение
             conn.Open();
             //Объявляем команду, которая выполнить запрос в соединении conn
@@ -273,9 +273,11 @@ namespace WindowsFormsApp1
             }
             reload_list();
         }
-       
+         
+        
+        
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+    private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             comboBox2.Enabled = true;
             //Заполнение Combobox2 теми подкатегориями, которые относятся к выбранной категории
@@ -283,8 +285,18 @@ namespace WindowsFormsApp1
             //Установка пустой строки по умолчанию в ComboBox2
             comboBox2.Text = "";
             
-
             
+                string vybor = comboBox1.SelectedItem.ToString();
+            if (vybor != null)
+            {
+                textBox1.Text = "";
+            }
+            else if (vybor == "2") ;
+             // остальные действия
+            
+
+
+
         }
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
@@ -318,7 +330,7 @@ namespace WindowsFormsApp1
         public void GetListCar2()
         {
             //Запрос для вывода строк в БД
-            string commandStr = $"SELECT t_Cars.NumberTS AS 'Номер автомобиля', t_Marka.titleMarks AS 'Марка автомобиля', t_Model.titleModel AS 'Модель автомобиля' FROM (t_Marka INNER JOIN t_Model ON t_Marka.idMarka = t_Model.idMarka) INNER JOIN t_Cars ON t_Model.idModel = t_Cars.idModel WHERE t_Marka.titleMarks = '{comboBox1.Text}' AND t_Model.titleModel = '{comboBox2.Text}';";
+            string commandStr = $"SELECT t_Cars.NumberTS AS 'Номер', t_Marka.titleMarks AS 'Марка', t_Model.titleModel AS 'Модель' FROM (t_Marka INNER JOIN t_Model ON t_Marka.idMarka = t_Model.idMarka) INNER JOIN t_Cars ON t_Model.idModel = t_Cars.idModel WHERE t_Marka.titleMarks = '{comboBox1.Text}' AND t_Model.titleModel = '{comboBox2.Text}';";
             //Открываем соединение
             conn.Open();
             //Объявляем команду, которая выполнить запрос в соединении conn
@@ -335,7 +347,13 @@ namespace WindowsFormsApp1
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            bSource.Filter = "Марка автомобиля LIKE'" + textBox1.Text + "%'";
+            bSource.Filter = "Марка LIKE'" + textBox1.Text + "%'";
+            string vybor = textBox1.Text;
+            if (vybor != null)
+            {
+                reload_list();
+            }
+            else if (vybor == "2") ;
         }
     }
 }
