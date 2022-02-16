@@ -224,10 +224,12 @@ namespace WindowsFormsApp1
                 MessageBox.Show("Ошибка чтения списка ЦП \n\n" + ex, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
             }
+            
             finally
             {
                 conn.Close();
             }
+            
         }
         public void GetComboBox2(string idMarka)
         {
@@ -351,6 +353,8 @@ namespace WindowsFormsApp1
             string vybor = textBox1.Text;
             if (vybor != null)
             {
+                comboBox1.Text = "";
+                comboBox2.Text = "";
                 reload_list();
             }
             else if (vybor == "2") ;
