@@ -136,8 +136,8 @@ namespace WindowsFormsApp1
         public void GetListDriver()
         {
             //Запрос для вывода строк в БД
-            string commandStr = $"SELECT t_Driver.fioDriver AS 'ФИО', t_Driver.phoneDriver AS 'Номер телефона', t_Driver.idCar, t_Marka.titleMarks AS 'Марка автомобиля', t_Model.titleModel AS 'Модель автомобиля', t_Model.idMarka, t_Driver.dateOfbirthDriver AS 'Дата рождения', t_Cars.NumberTS AS 'Номер ТС' FROM((t_Driver INNER JOIN t_Cars ON t_Driver.idCar = t_Cars.idCar) INNER JOIN t_Model ON t_Cars.idModel = t_Model.idModel) INNER JOIN t_Marka ON t_Cars.idMarka = t_Marka.idMarka;";
-           ;
+            string commandStr = $"SELECT t_Driver.idDriver AS 'ID', t_Driver.fioDriver AS 'ФИО', t_Driver.phoneDriver AS 'Номер телефона', t_Driver.dateOfbirthDriver AS 'Дата рождения' FROM t_Driver;";
+                       ;
             //Открываем соединение
             conn.Open();
             //Объявляем команду, которая выполнить запрос в соединении conn
