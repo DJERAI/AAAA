@@ -28,6 +28,7 @@ namespace WindowsFormsApp1
         //что бы в БД не отправлялся null
         string id_selected_rows = "0";
         string fioDisp;
+        string index_selected_rows;
         string index_rows5;
         public UC_dfd()
         {
@@ -70,15 +71,16 @@ namespace WindowsFormsApp1
         private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
 
-            if (!e.RowIndex.Equals(-1) && !e.ColumnIndex.Equals(-1) && e.Button.Equals(MouseButtons.Right))
+            if (!e.RowIndex.Equals(-1) && !e.ColumnIndex.Equals(-1) && e.Button.Equals(MouseButtons.Left))
             {
                 dataGridView1.CurrentCell = dataGridView1[e.ColumnIndex, e.RowIndex];
-                //dataGridView1.CurrentRow.Selected = true;
-                dataGridView1.CurrentCell.Selected = true;
-                //Метод получения ID выделенной строки в глобальную переменную
+
+                dataGridView1.CurrentRow.Selected = true;
+
+                index_rows5 = dataGridView1.SelectedCells[0].RowIndex.ToString();
                 GetSelectedIDString();
             }
-          
+
         }
         public void GetSelectedIDString()
         {
@@ -106,8 +108,8 @@ namespace WindowsFormsApp1
             // открываем соединение
             conn.Open();
             // запрос удаления данных
-            string query = $"DELETE idDisp, fioDisp FROM t_Disp;";
-                  
+            string query = $"DELETE FROM t_Disp WHERE idDisp = '{id_selected_rows}'";
+
             try
             {
                 MySqlCommand command = new MySqlCommand(query, conn);
@@ -160,6 +162,8 @@ namespace WindowsFormsApp1
 
                 dataGridView1.CurrentRow.Selected = true;
 
+                index_rows5 = dataGridView1.SelectedCells[0].RowIndex.ToString();
+                GetSelectedIDString();
             }
         }
         private void toolStripButton4_Click(object sender, EventArgs e)
@@ -230,6 +234,15 @@ namespace WindowsFormsApp1
             //Если метод вставки записи в БД вернёт истину, то просто обновим список и увидим вставленное значение
             InsertDisp(fioDisp);
             reload_list();
+        }
+
+        private void toolStripButton4_Click_1(object sender, EventArgs e)
+        {
+            index_selected_rows = dataGridView1.SelectedCells[0].RowIndex.ToString();
+            //ID конкретной записи в Базе данных, на основании индекса строки
+            id_selected_rows = dataGridView1.Rows[Convert.ToInt32(index_selected_rows)].Cells[0].Value.ToString();
+            dataGridView1.Rows.RemoveAt(Convert.ToInt32(index_rows5));
+            DeleteDisp();
         }
     }
 }

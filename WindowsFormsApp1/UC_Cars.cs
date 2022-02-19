@@ -42,15 +42,6 @@ namespace WindowsFormsApp1
 
         private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)/////////////////////////////////////////////
         {
-            //if (!e.RowIndex.Equals(-1) && !e.ColumnIndex.Equals(-1) && e.Button.Equals(MouseButtons.Right))
-            //{
-            //    dataGridView1.CurrentCell = dataGridView1[e.ColumnIndex, e.RowIndex];
-            //    //dataGridView1.CurrentRow.Selected = true;
-            //    dataGridView1.CurrentCell.Selected = true;
-            //    //Метод получения ID выделенной строки в глобальную переменную
-            //    GetSelectedIDString();
-            //}
-
             if (!e.RowIndex.Equals(-1) && !e.ColumnIndex.Equals(-1) && e.Button.Equals(MouseButtons.Left))
             {
                 dataGridView1.CurrentCell = dataGridView1[e.ColumnIndex, e.RowIndex];
@@ -60,7 +51,7 @@ namespace WindowsFormsApp1
                 index_rows5 = dataGridView1.SelectedCells[0].RowIndex.ToString();
                 GetSelectedIDString();
             }
-            MessageBox.Show(index_rows5);
+            
         }
         public void GetSelectedIDString()
         {
@@ -70,7 +61,6 @@ namespace WindowsFormsApp1
             index_selected_rows = dataGridView1.SelectedCells[0].RowIndex.ToString();
             //ID конкретной записи в Базе данных, на основании индекса строки
             id_selected_rows = dataGridView1.Rows[Convert.ToInt32(index_selected_rows)].Cells[0].Value.ToString();
-            MessageBox.Show(id_selected_rows);
         }
         public void reload_list()
         {

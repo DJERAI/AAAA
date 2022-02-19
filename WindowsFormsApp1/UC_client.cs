@@ -39,12 +39,13 @@ namespace WindowsFormsApp1
 
         private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (!e.RowIndex.Equals(-1) && !e.ColumnIndex.Equals(-1) && e.Button.Equals(MouseButtons.Right))
+            if (!e.RowIndex.Equals(-1) && !e.ColumnIndex.Equals(-1) && e.Button.Equals(MouseButtons.Left))
             {
                 dataGridView1.CurrentCell = dataGridView1[e.ColumnIndex, e.RowIndex];
-                //dataGridView1.CurrentRow.Selected = true;
-                dataGridView1.CurrentCell.Selected = true;
-                //Метод получения ID выделенной строки в глобальную переменную
+
+                dataGridView1.CurrentRow.Selected = true;
+
+                index_rows5 = dataGridView1.SelectedCells[0].RowIndex.ToString();
                 GetSelectedIDString();
             }
         }
@@ -74,22 +75,14 @@ namespace WindowsFormsApp1
             // открываем соединение
             conn.Open();
             // запрос удаления данных
-            string query = $"DELETE idClient FROM t_Client;"; 
-            string query2 = $"DELETE fioClient FROM t_Client;" ;
-            string query3 = $"DELETE phoneClient FROM t_Client;";
-
+            string query = $"DELETE FROM t_Client WHERE idClient = '{id_selected_rows}'";
 
             try
             {
                 MySqlCommand command = new MySqlCommand(query, conn);
-                MySqlCommand command1 = new MySqlCommand(query2, conn);
-                MySqlCommand command2 = new MySqlCommand(query3, conn);
-               
-                // выполняем запрос
+                              // выполняем запрос
                 InsertCount = command.ExecuteNonQuery();
-                InsertCount = command1.ExecuteNonQuery();
-                InsertCount = command2.ExecuteNonQuery();
-                
+            
             }
             catch
             {
@@ -168,6 +161,7 @@ namespace WindowsFormsApp1
                 dataGridView1.CurrentRow.Selected = true;
 
                 index_rows5 = dataGridView1.SelectedCells[0].RowIndex.ToString();
+                GetSelectedIDString();
             }
         }
 

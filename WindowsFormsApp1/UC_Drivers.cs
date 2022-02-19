@@ -27,6 +27,7 @@ namespace WindowsFormsApp1
         // строка подключения к БД
         string connStr = "server=caseum.ru;port=33333;user=st_1_22_19;database=st_1_22_19;password=97035229;";
         string id_selected_rows = "0";
+        string index_rows5;
 
         public UC_Drivers()
         {
@@ -103,6 +104,7 @@ namespace WindowsFormsApp1
                     conn.Close();
 
                 }
+                reload_list();
             }
         }
 
@@ -114,6 +116,8 @@ namespace WindowsFormsApp1
                 //dataGridView1.CurrentRow.Selected = true;
                 dataGridView1.CurrentCell.Selected = true;
                 //Метод получения ID выделенной строки в глобальную переменную
+                GetSelectedIDString();
+                index_rows5 = dataGridView1.SelectedCells[0].RowIndex.ToString();
                 GetSelectedIDString();
             }
         }
@@ -167,6 +171,66 @@ namespace WindowsFormsApp1
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void dataGridView1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (!e.RowIndex.Equals(-1) && !e.ColumnIndex.Equals(-1) && e.Button.Equals(MouseButtons.Left))
+            {
+                dataGridView1.CurrentCell = dataGridView1[e.ColumnIndex, e.RowIndex];
+
+                dataGridView1.CurrentRow.Selected = true;
+
+                index_rows5 = dataGridView1.SelectedCells[0].RowIndex.ToString();
+                GetSelectedIDString();
+            }
+        }
+        public bool DeleteDriver()
+        {
+            //определяем переменную, хранящую количество вставленных строк
+            int InsertCount = 0;
+            //Объявляем переменную храняющую результат операции
+            bool result = false;
+            // открываем соединение
+            conn.Open();
+            // запрос удаления данных
+            string query = $"DELETE FROM t_Driver WHERE idDriver = '{id_selected_rows}'";
+
+            try
+            {
+                MySqlCommand command = new MySqlCommand(query, conn);
+
+                // выполняем запрос
+                InsertCount = command.ExecuteNonQuery();
+                dataGridView1.Rows.RemoveAt(Convert.ToInt32(index_rows5));
+
+            }
+            catch
+            {
+                InsertCount = 0;
+            }
+            finally
+            {
+                conn.Close();
+                if (InsertCount != 0)
+                {
+                    result = true;
+                    reload_list();
+                }
+            }
+            return result;
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            string index_selected_rows;
+            //Индекс выбранной строки
+            index_selected_rows = dataGridView1.SelectedCells[0].RowIndex.ToString();
+            //ID конкретной записи в Базе данных, на основании индекса строки
+            id_selected_rows = dataGridView1.Rows[Convert.ToInt32(index_selected_rows)].Cells[0].Value.ToString();
+            dataGridView1.Rows.RemoveAt(Convert.ToInt32(index_rows5));
+            DeleteDriver();
         }
     }
 }
