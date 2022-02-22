@@ -59,8 +59,8 @@ namespace WindowsFormsApp1
             // 
             // comboBox1
             // 
-            this.comboBox1.BackColor = System.Drawing.Color.MediumOrchid;
-            this.comboBox1.ForeColor = System.Drawing.SystemColors.Control;
+            this.comboBox1.BackColor = System.Drawing.SystemColors.Control;
+            this.comboBox1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(51, 410);
             this.comboBox1.Name = "comboBox1";
@@ -81,8 +81,8 @@ namespace WindowsFormsApp1
             // 
             // comboBox2
             // 
-            this.comboBox2.BackColor = System.Drawing.Color.MediumOrchid;
-            this.comboBox2.ForeColor = System.Drawing.SystemColors.Control;
+            this.comboBox2.BackColor = System.Drawing.SystemColors.Control;
+            this.comboBox2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Location = new System.Drawing.Point(51, 472);
             this.comboBox2.Name = "comboBox2";
@@ -102,8 +102,8 @@ namespace WindowsFormsApp1
             // 
             // comboBox3
             // 
-            this.comboBox3.BackColor = System.Drawing.Color.MediumOrchid;
-            this.comboBox3.ForeColor = System.Drawing.SystemColors.Control;
+            this.comboBox3.BackColor = System.Drawing.SystemColors.Control;
+            this.comboBox3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.comboBox3.FormattingEnabled = true;
             this.comboBox3.Location = new System.Drawing.Point(51, 527);
             this.comboBox3.Name = "comboBox3";
@@ -150,8 +150,8 @@ namespace WindowsFormsApp1
             // 
             // comboBox4
             // 
-            this.comboBox4.BackColor = System.Drawing.Color.MediumOrchid;
-            this.comboBox4.ForeColor = System.Drawing.SystemColors.Control;
+            this.comboBox4.BackColor = System.Drawing.SystemColors.Control;
+            this.comboBox4.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.comboBox4.FormattingEnabled = true;
             this.comboBox4.Location = new System.Drawing.Point(51, 576);
             this.comboBox4.Name = "comboBox4";
@@ -171,8 +171,8 @@ namespace WindowsFormsApp1
             // 
             // comboBox5
             // 
-            this.comboBox5.BackColor = System.Drawing.Color.MediumOrchid;
-            this.comboBox5.ForeColor = System.Drawing.SystemColors.Control;
+            this.comboBox5.BackColor = System.Drawing.SystemColors.Control;
+            this.comboBox5.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.comboBox5.FormattingEnabled = true;
             this.comboBox5.Location = new System.Drawing.Point(234, 472);
             this.comboBox5.Name = "comboBox5";
@@ -192,8 +192,8 @@ namespace WindowsFormsApp1
             // 
             // comboBox6
             // 
-            this.comboBox6.BackColor = System.Drawing.Color.MediumOrchid;
-            this.comboBox6.ForeColor = System.Drawing.SystemColors.Control;
+            this.comboBox6.BackColor = System.Drawing.SystemColors.Control;
+            this.comboBox6.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.comboBox6.FormattingEnabled = true;
             this.comboBox6.Location = new System.Drawing.Point(234, 527);
             this.comboBox6.Name = "comboBox6";
@@ -216,9 +216,9 @@ namespace WindowsFormsApp1
             this.dataGridView1.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(15)))), ((int)(((byte)(55)))));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.GridColor = System.Drawing.Color.White;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView1.Location = new System.Drawing.Point(0, 28);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(950, 362);
+            this.dataGridView1.Size = new System.Drawing.Size(947, 343);
             this.dataGridView1.TabIndex = 14;
             this.dataGridView1.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDown);
             // 
@@ -247,6 +247,7 @@ namespace WindowsFormsApp1
             // toolStripTextBox1
             // 
             this.toolStripTextBox1.BackColor = System.Drawing.Color.MediumOrchid;
+            this.toolStripTextBox1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.toolStripTextBox1.ForeColor = System.Drawing.SystemColors.Control;
             this.toolStripTextBox1.Name = "toolStripTextBox1";
             this.toolStripTextBox1.Size = new System.Drawing.Size(100, 25);
@@ -319,6 +320,7 @@ namespace WindowsFormsApp1
             this.Controls.Add(this.comboBox1);
             this.Name = "UCorder";
             this.Size = new System.Drawing.Size(950, 610);
+            this.Load += new System.EventHandler(this.UCorder_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
