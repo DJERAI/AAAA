@@ -90,7 +90,7 @@
             // dateTimePicker1
             // 
             this.dateTimePicker1.CalendarTitleForeColor = System.Drawing.Color.Azure;
-            this.dateTimePicker1.Location = new System.Drawing.Point(449, 85);
+            this.dateTimePicker1.Location = new System.Drawing.Point(449, 87);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(307, 20);
             this.dateTimePicker1.TabIndex = 6;

@@ -26,6 +26,7 @@ namespace WindowsFormsApp1
         private DataTable table = new DataTable();
         //Переменная для ID записи в БД, выбранной в гриде. Пока она не содердит значения, лучше его инициализировать с 0
         //что бы в БД не отправлялся null
+        string connStr = "server=caseum.ru;port=33333;user=st_1_22_19;database=st_1_22_19;password=97035229;";
         string id_selected_rows = "0";
         string index_rows5;
         public UCorder()
@@ -312,6 +313,85 @@ namespace WindowsFormsApp1
             finally
             {
                 conn.Close();
+            }
+
+        }
+        public bool InsertAdr(string nach, string konech, int km )
+        {
+            //определяем переменную, хранящую количество вставленных строк
+            int InsertCount = 0;
+            //Объявляем переменную храняющую результат операции
+            bool result = false;
+            // открываем соединение
+            conn.Open();
+            // запросы
+            // запрос вставки данных
+            string query = $"INSERT INTO t_Order (startAdr, endAdr, km) VALUES ('{nach}', '{konech}', '{km})";
+            try
+            {
+                // объект для выполнения SQL-запроса
+                MySqlCommand command = new MySqlCommand(query, conn);
+                // выполняем запрос
+                InsertCount = command.ExecuteNonQuery();
+                // закрываем подключение к БД
+            }
+            catch
+            {
+                //Если возникла ошибка, то запрос не вставит ни одной строки
+                InsertCount = 0;
+            }
+            finally
+            {
+                //Но в любом случае, нужно закрыть соединение
+                conn.Close();
+                //Ессли количество вставленных строк было не 0, то есть вставлена хотя бы 1 строка
+                if (InsertCount != 0)
+                {
+                    //то результат операции - истина
+                    result = true;
+                }
+            }
+            //Вернём результат операции, где его обработает алгоритм
+            return result;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            using (MySqlConnection conn = new MySqlConnection(connStr))
+            {
+                //Открываем соединение
+                conn.Open();
+
+                using (MySqlCommand cmd = new MySqlCommand("INSERT INTO t_Order (fioDriver,dateOfbirthDriver,phoneDriver) " +
+                   "VALUES (@name, @date,@number)", conn))
+                {
+                    //Использование параметров в запросах. Это повышает безопасность работы программы
+                    cmd.Parameters.Add("@name", MySqlDbType.VarChar).Value = textBox1.Text;
+                    cmd.Parameters.Add("@date", MySqlDbType.Timestamp).Value = dateTimePicker1.Value;
+                    cmd.Parameters.Add("@number", MySqlDbType.VarChar).Value = textBox2.Text;
+
+                    int insertedRows = cmd.ExecuteNonQuery();
+                    // закрываем подключение  БД
+                    conn.Close();
+
+                }
+                reload_list();
+            }
+            
+            //Объявляем переменные для вставки в БД
+            string nach = textBox2.Text;
+            string konech = textBox3.Text;
+            int km = Convert.ToInt32(textBox1.Text);
+            //Если метод вставки записи в БД вернёт истину, то просто обновим список и увидим вставленное значение
+            if (InsertAdr(nach, konech, km))
+            {
+                GetListOrder();
+                MessageBox.Show("Заказ успешно добавлен.");
+            }
+            //Иначе произошла какая то ошибка и покажем пользователю уведомление
+            else
+            {
+                MessageBox.Show("Произошла ошибка.", "Ошибка");
             }
 
         }
