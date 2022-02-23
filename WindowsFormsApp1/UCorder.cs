@@ -74,7 +74,7 @@ namespace WindowsFormsApp1
         public void GetListOrder()
         {
             //Запрос для вывода строк в БД
-            string commandStr = $"SELECT t_Order.idOrder, t_Order.idDisp, t_Order.dateOrder, t_Order.startAdr, t_Order.endAdr, t_Order.km, t_Order.idClient, t_Order.Price, t_Order.idCar, t_Order.idTarif FROM t_Order;";
+            string commandStr = $"SELECT t_Order.idOrder, t_Driver.fioDriver, t_Disp.fioDisp, t_Tarif.titleTarif, t_Order.dateOrder, t_Order.startAdr, t_Order.endAdr, t_Marka.titleMarks, t_Model.titleModel, t_Cars.NumberTS, t_Order.Price FROM((((t_Order INNER JOIN((t_Marka INNER JOIN t_Model ON t_Marka.idMarka = t_Model.idMarka) INNER JOIN t_Cars ON t_Model.idModel = t_Cars.idModel) ON t_Order.idCar = t_Cars.idCar) INNER JOIN t_Driver ON t_Order.idDriver = t_Driver.idDriver) INNER JOIN t_Disp ON t_Order.idDisp = t_Disp.idDisp) INNER JOIN t_Client ON t_Order.idClient = t_Client.idClient) INNER JOIN t_Tarif ON t_Order.idTarif = t_Tarif.idTarif; ";
             //Открываем соединение
             conn.Open();
             //Объявляем команду, которая выполнить запрос в соединении conn
