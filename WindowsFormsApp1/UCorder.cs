@@ -131,6 +131,8 @@ namespace WindowsFormsApp1
             comboBox3.Text = "";
             GetComboBox4();
             comboBox4.Text = "";
+            GetComboBox6();
+            comboBox6.Text = "";
             
 
 
@@ -357,31 +359,9 @@ namespace WindowsFormsApp1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            using (MySqlConnection conn = new MySqlConnection(connStr))
-            {
-                //Открываем соединение
-                conn.Open();
+            conn.Open();
+            string query = $"SELECT idDisp FROM t_Disp WHERE fioDisp = {comboBox1.Text} ;";
 
-                using (MySqlCommand cmd = new MySqlCommand("INSERT INTO t_Order (dateOrder,startAdr,endAdr,idDriver,idDisp,idCar,km,idClient) " +
-                   "VALUES (@date, @startAdr,@endAdr, @idDriver, @idCar, @idDisp, @idCar, @km, @idClient, @idTarif)", conn))
-                {
-                    //Использование параметров в запросах. Это повышает безопасность работы программы
-                    cmd.Parameters.Add("@startAdr", MySqlDbType.VarChar).Value = textBox2.Text;
-                    cmd.Parameters.Add("@endAdr", MySqlDbType.VarChar).Value = textBox3.Text;
-                    cmd.Parameters.Add("@date", MySqlDbType.Timestamp).Value = dateTimePicker1.Value;
-                    cmd.Parameters.Add("@km", MySqlDbType.VarChar).Value = textBox1.Text;
-                    cmd.Parameters.Add("@idClient", MySqlDbType.VarChar).Value = comboBox1.Text;
-                    cmd.Parameters.Add("@idTarif", MySqlDbType.VarChar).Value = comboBox2.Text;
-                    cmd.Parameters.Add("@idDriver", MySqlDbType.VarChar).Value = comboBox4.Text;
-
-                    int insertedRows = cmd.ExecuteNonQuery();
-                    // закрываем подключение  БД
-                    conn.Close();
-
-                }
-                reload_list();
-            }
-            
             //Объявляем переменные для вставки в БД
             string nach = textBox2.Text;
             string konech = textBox3.Text;
@@ -455,6 +435,61 @@ namespace WindowsFormsApp1
 
          
             // остальные действия
+        }
+        public void GetComboBox6()
+        {
+            //Формирование списка статусов
+            DataTable list_marka_table = new DataTable();
+            MySqlCommand list_marka_command = new MySqlCommand();
+            //Открываем соединение
+            conn.Open();
+            //Формируем столбцы для комбобокса списка ЦП
+            list_marka_table.Columns.Add(new DataColumn("idDisp", System.Type.GetType("System.Int32")));
+            list_marka_table.Columns.Add(new DataColumn("fioDisp", System.Type.GetType("System.String")));
+            //Настройка видимости полей комбобокса
+            comboBox6.DataSource = list_marka_table;
+            comboBox6.DisplayMember = "fioDisp";
+            comboBox6.ValueMember = "idDisp";
+            //Формируем строку запроса на отображение списка статусов прав пользователя
+            string sql_list_model = "SELECT idDisp, fioDisp FROM t_Disp";
+            list_marka_command.CommandText = sql_list_model;
+            list_marka_command.Connection = conn;
+            //Формирование списка ЦП для combobox'a
+            MySqlDataReader list_model_reader;
+            try
+            {
+                //Инициализируем ридер
+                list_model_reader = list_marka_command.ExecuteReader();
+                while (list_model_reader.Read())
+                {
+                    DataRow rowToAdd = list_marka_table.NewRow();
+                    rowToAdd["idDisp"] = Convert.ToInt32(list_model_reader[0]);
+                    rowToAdd["fioDisp"] = list_model_reader[1].ToString();
+                    list_marka_table.Rows.Add(rowToAdd);
+                }
+                list_model_reader.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка чтения списка ЦП \n\n" + ex, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Application.Exit();
+            }
+
+            finally
+            {
+                conn.Close();
+            }
+
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 
