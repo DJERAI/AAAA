@@ -29,6 +29,7 @@ namespace WindowsFormsApp1
         string connStr = "server=caseum.ru;port=33333;user=st_1_22_19;database=st_1_22_19;password=97035229;";
         string id_selected_rows = "0";
         string index_rows5;
+        string idMarka;
         public UCorder()
         {
             InitializeComponent();
@@ -126,10 +127,12 @@ namespace WindowsFormsApp1
             comboBox1.Text = "";
             GetComboBox2();
             comboBox2.Text = "";
-            //GetComboBox3();
-            //comboBox3.Text = "";
+            GetComboBox3();
+            comboBox3.Text = "";
             GetComboBox4();
             comboBox4.Text = "";
+            
+
 
 
         }
@@ -223,7 +226,7 @@ namespace WindowsFormsApp1
             }
 
         }
-        public void GetComboBox1()
+        public void GetComboBox3()
         {
             //Формирование списка статусов
             DataTable list_marka_table = new DataTable();
@@ -234,9 +237,9 @@ namespace WindowsFormsApp1
             list_marka_table.Columns.Add(new DataColumn("idMarka", System.Type.GetType("System.Int32")));
             list_marka_table.Columns.Add(new DataColumn("titleMarks", System.Type.GetType("System.String")));
             //Настройка видимости полей комбобокса
-            comboBox1.DataSource = list_marka_table;
-            comboBox1.DisplayMember = "titleMarks";
-            comboBox1.ValueMember = "idMarka";
+            comboBox3.DataSource = list_marka_table;
+            comboBox3.DisplayMember = "titleMarks";
+            comboBox3.ValueMember = "idMarka";
             //Формируем строку запроса на отображение списка статусов прав пользователя
             string sql_list_model = "SELECT idMarka, titleMarks FROM t_Marka;SELECT NumberTS FROM t_Cars";
             list_marka_command.CommandText = sql_list_model;
@@ -407,9 +410,9 @@ namespace WindowsFormsApp1
             list_model_table.Columns.Add(new DataColumn("idModel", System.Type.GetType("System.Int32")));
             list_model_table.Columns.Add(new DataColumn("titleModel", System.Type.GetType("System.String")));
             //Настройка видимости полей комбобокса
-            comboBox2.DataSource = list_model_table;
-            comboBox2.DisplayMember = "titleModel";
-            comboBox2.ValueMember = "idModel";
+            comboBox5.DataSource = list_model_table;
+            comboBox5.DisplayMember = "titleModel";
+            comboBox5.ValueMember = "idModel";
             //Формируем строку запроса на отображение списка статусов прав пользователя
             string sql_list_users = $"SELECT idModel, titleModel FROM t_Model WHERE idMarka = {idMarka}";
             list_model_command.CommandText = sql_list_users;
@@ -447,15 +450,10 @@ namespace WindowsFormsApp1
             //Заполнение Combobox2 теми подкатегориями, которые относятся к выбранной категории
             GetComboBox5(comboBox3.SelectedValue.ToString());
             //Установка пустой строки по умолчанию в ComboBox2
-            comboBox2.Text = "";
+            comboBox5.Text = "";
 
 
-            string vybor = comboBox1.SelectedItem.ToString();
-            if (vybor != null)
-            {
-                textBox1.Text = "";
-            }
-            else if (vybor == "2") ;
+         
             // остальные действия
         }
     }
