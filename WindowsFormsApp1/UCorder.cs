@@ -74,7 +74,7 @@ namespace WindowsFormsApp1
         public void GetListOrder()
         {
             //Запрос для вывода строк в БД
-            string commandStr = $"SELECT t_Order.idDriver, t_Order.idDisp, t_Order.dateOrder FROM(t_Order INNER JOIN t_Driver ON t_Order.idDriver = t_Driver.idDriver) INNER JOIN t_Disp ON t_Order.idDisp = t_Disp.idDisp;";
+            string commandStr = $"SELECT t_Order.idOrder, t_Order.idDisp, t_Order.dateOrder, t_Order.startAdr, t_Order.endAdr, t_Order.km, t_Order.idClient, t_Order.Price, t_Order.idCar, t_Order.idTarif FROM t_Order;";
             //Открываем соединение
             conn.Open();
             //Объявляем команду, которая выполнить запрос в соединении conn
@@ -271,7 +271,7 @@ namespace WindowsFormsApp1
         //    {
         //        conn.Close();
         //    }
-        public void GetComboBox4()
+            public void GetComboBox4()
         {
             //Формирование списка статусов
             DataTable list_marka_table = new DataTable();
@@ -326,7 +326,7 @@ namespace WindowsFormsApp1
             conn.Open();
             // запросы
             // запрос вставки данных
-            string query = $"INSERT INTO t_Order (startAdr, endAdr, km) VALUES ('{nach}', '{konech}', '{km})";
+            string query = $"INSERT INTO t_Order (startAdr, endAdr, km, idDriver, idDisp ) VALUES ('{nach}', '{konech}', '{km}')";
             try
             {
                 // объект для выполнения SQL-запроса
@@ -362,13 +362,17 @@ namespace WindowsFormsApp1
                 //Открываем соединение
                 conn.Open();
 
-                using (MySqlCommand cmd = new MySqlCommand("INSERT INTO t_Order (fioDriver,dateOfbirthDriver,phoneDriver) " +
-                   "VALUES (@name, @date,@number)", conn))
+                using (MySqlCommand cmd = new MySqlCommand("INSERT INTO t_Order (dateOrder,startAdr,endAdr,idDriver,idDisp,idCar,km,idClient) " +
+                   "VALUES (@date, @startAdr,@endAdr, @idDriver, @idCar, @idDisp, @idCar, @km, @idClient, @idTarif)", conn))
                 {
                     //Использование параметров в запросах. Это повышает безопасность работы программы
-                    cmd.Parameters.Add("@name", MySqlDbType.VarChar).Value = textBox1.Text;
+                    cmd.Parameters.Add("@startAdr", MySqlDbType.VarChar).Value = textBox2.Text;
+                    cmd.Parameters.Add("@endAdr", MySqlDbType.VarChar).Value = textBox3.Text;
                     cmd.Parameters.Add("@date", MySqlDbType.Timestamp).Value = dateTimePicker1.Value;
-                    cmd.Parameters.Add("@number", MySqlDbType.VarChar).Value = textBox2.Text;
+                    cmd.Parameters.Add("@km", MySqlDbType.VarChar).Value = textBox1.Text;
+                    cmd.Parameters.Add("@idClient", MySqlDbType.VarChar).Value = comboBox1.Text;
+                    cmd.Parameters.Add("@idTarif", MySqlDbType.VarChar).Value = comboBox2.Text;
+                    cmd.Parameters.Add("@idDriver", MySqlDbType.VarChar).Value = comboBox4.Text;
 
                     int insertedRows = cmd.ExecuteNonQuery();
                     // закрываем подключение  БД

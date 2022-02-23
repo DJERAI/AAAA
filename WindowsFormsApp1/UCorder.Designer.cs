@@ -199,7 +199,7 @@ namespace WindowsFormsApp1
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Italic);
             this.button3.ForeColor = System.Drawing.SystemColors.Control;
-            this.button3.Location = new System.Drawing.Point(385, 368);
+            this.button3.Location = new System.Drawing.Point(387, 377);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(136, 30);
             this.button3.TabIndex = 15;
