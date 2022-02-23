@@ -47,12 +47,13 @@ namespace WindowsFormsApp1
 
         private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (!e.RowIndex.Equals(-1) && !e.ColumnIndex.Equals(-1) && e.Button.Equals(MouseButtons.Right))
+            if (!e.RowIndex.Equals(-1) && !e.ColumnIndex.Equals(-1) && e.Button.Equals(MouseButtons.Left))
             {
                 dataGridView1.CurrentCell = dataGridView1[e.ColumnIndex, e.RowIndex];
-                //dataGridView1.CurrentRow.Selected = true;
-                dataGridView1.CurrentCell.Selected = true;
-                //Метод получения ID выделенной строки в глобальную переменную
+
+                dataGridView1.CurrentRow.Selected = true;
+
+                index_rows5 = dataGridView1.SelectedCells[0].RowIndex.ToString();
                 GetSelectedIDString();
             }
         }
@@ -75,7 +76,7 @@ namespace WindowsFormsApp1
         public void GetListOrder()
         {
             //Запрос для вывода строк в БД
-            string commandStr = $"SELECT t_Order.idOrder, t_Driver.fioDriver, t_Disp.fioDisp, t_Tarif.titleTarif, t_Order.dateOrder, t_Order.startAdr, t_Order.endAdr, t_Marka.titleMarks, t_Model.titleModel, t_Cars.NumberTS, t_Order.Price FROM((((t_Order INNER JOIN((t_Marka INNER JOIN t_Model ON t_Marka.idMarka = t_Model.idMarka) INNER JOIN t_Cars ON t_Model.idModel = t_Cars.idModel) ON t_Order.idCar = t_Cars.idCar) INNER JOIN t_Driver ON t_Order.idDriver = t_Driver.idDriver) INNER JOIN t_Disp ON t_Order.idDisp = t_Disp.idDisp) INNER JOIN t_Client ON t_Order.idClient = t_Client.idClient) INNER JOIN t_Tarif ON t_Order.idTarif = t_Tarif.idTarif; ";
+            string commandStr = $"SELECT t_Order.idOrder AS 'ID', t_Driver.fioDriver AS 'ФИО водителя', t_Disp.fioDisp AS 'ФИО диспетчера', t_Tarif.titleTarif AS 'Тариф', t_Order.dateOrder AS 'Дата заказа', t_Order.startAdr AS 'Начальный адрес', t_Order.endAdr AS 'Конечный адрес', t_Marka.titleMarks AS 'Марка автомобиля', t_Model.titleModel AS 'Модель автомобиля', t_Cars.NumberTS, t_Order.Price AS 'Цена поездки' FROM((((t_Order INNER JOIN((t_Marka INNER JOIN t_Model ON t_Marka.idMarka = t_Model.idMarka) INNER JOIN t_Cars ON t_Model.idModel = t_Cars.idModel) ON t_Order.idCar = t_Cars.idCar) INNER JOIN t_Driver ON t_Order.idDriver = t_Driver.idDriver) INNER JOIN t_Disp ON t_Order.idDisp = t_Disp.idDisp) INNER JOIN t_Client ON t_Order.idClient = t_Client.idClient) INNER JOIN t_Tarif ON t_Order.idTarif = t_Tarif.idTarif; ";
             //Открываем соединение
             conn.Open();
             //Объявляем команду, которая выполнить запрос в соединении conn
@@ -104,7 +105,7 @@ namespace WindowsFormsApp1
 
 
             //Ширина полей
-            dataGridView1.Columns[0].FillWeight = 150;
+            dataGridView1.Columns[0].FillWeight = 50;
             dataGridView1.Columns[1].FillWeight = 150;
             dataGridView1.Columns[2].FillWeight = 150;
 
@@ -119,7 +120,7 @@ namespace WindowsFormsApp1
             dataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
             //Убираем заголовки строк
-            dataGridView1.RowHeadersVisible = true;
+            dataGridView1.RowHeadersVisible = false;
             //Показываем заголовки столбцов
             dataGridView1.ColumnHeadersVisible = true;
             dataGridView1.AllowUserToAddRows = false;
@@ -133,7 +134,7 @@ namespace WindowsFormsApp1
             comboBox4.Text = "";
             GetComboBox6();
             comboBox6.Text = "";
-            
+
 
 
 
@@ -318,65 +319,67 @@ namespace WindowsFormsApp1
             }
 
         }
-        public bool InsertAdr(string nach, string konech, int km )
-        {
-            //определяем переменную, хранящую количество вставленных строк
-            int InsertCount = 0;
-            //Объявляем переменную храняющую результат операции
-            bool result = false;
-            // открываем соединение
-            conn.Open();
-            // запросы
-            // запрос вставки данных
-            string query = $"INSERT INTO t_Order (startAdr, endAdr, km, idDriver, idDisp ) VALUES ('{nach}', '{konech}', '{km}')";
-            try
-            {
-                // объект для выполнения SQL-запроса
-                MySqlCommand command = new MySqlCommand(query, conn);
-                // выполняем запрос
-                InsertCount = command.ExecuteNonQuery();
-                // закрываем подключение к БД
-            }
-            catch
-            {
-                //Если возникла ошибка, то запрос не вставит ни одной строки
-                InsertCount = 0;
-            }
-            finally
-            {
-                //Но в любом случае, нужно закрыть соединение
-                conn.Close();
-                //Ессли количество вставленных строк было не 0, то есть вставлена хотя бы 1 строка
-                if (InsertCount != 0)
-                {
-                    //то результат операции - истина
-                    result = true;
-                }
-            }
-            //Вернём результат операции, где его обработает алгоритм
-            return result;
-        }
+
 
         private void button1_Click(object sender, EventArgs e)
         {
-            conn.Open();
-            string query = $"SELECT idDisp FROM t_Disp WHERE fioDisp = {comboBox1.Text} ;";
+            double coef = 0;
+            double kmprice = 0;
+            double price = 0;
 
-            //Объявляем переменные для вставки в БД
-            string nach = textBox2.Text;
-            string konech = textBox3.Text;
-            int km = Convert.ToInt32(textBox1.Text);
-            //Если метод вставки записи в БД вернёт истину, то просто обновим список и увидим вставленное значение
-            if (InsertAdr(nach, konech, km))
+            conn.Open();
+            string query = $"SELECT idDisp FROM t_Disp WHERE fioDisp = '{comboBox6.Text}' ;";
+            MySqlCommand command1 = new MySqlCommand(query, conn);
+            string query1_resultDispID = command1.ExecuteScalar().ToString();
+
+            string query2 = $"SELECT idDriver FROM t_Driver WHERE fioDriver = '{comboBox4.Text}' ;";
+            MySqlCommand command2 = new MySqlCommand(query2, conn);
+            string query2_resultDriverID = command2.ExecuteScalar().ToString();
+
+            string query3 = $"SELECT idClient FROM t_Client WHERE fioClient = '{comboBox1.Text}' ;";
+            MySqlCommand command3 = new MySqlCommand(query3, conn);
+            string query3_resultClientID = command3.ExecuteScalar().ToString();
+
+            string query4 = $"SELECT idTarif FROM t_Tarif WHERE titleTarif = '{comboBox2.Text}' ;";
+            MySqlCommand command4 = new MySqlCommand(query4, conn);
+            string query4_resultTarifID = command4.ExecuteScalar().ToString();
+
+
+
+            string query6 = $"SELECT idMarka FROM t_Marka WHERE titleMarks = '{comboBox3.Text}';";
+            MySqlCommand command6 = new MySqlCommand(query6, conn);
+            string query6_resultMarkaID = command6.ExecuteScalar().ToString();
+
+            string query7 = $"SELECT idModel FROM t_Model WHERE titleModel = '{comboBox5.Text}';";
+            MySqlCommand command7 = new MySqlCommand(query7, conn);
+            string query7_resultModelID = command7.ExecuteScalar().ToString();
+
+            string query8 = $"SELECT idCar FROM t_Cars WHERE idModel = '{query7_resultModelID}' AND idMarka = '{query6_resultMarkaID}' ; ";
+            MySqlCommand command8 = new MySqlCommand(query8, conn);
+            string query8_resultCarID = command8.ExecuteScalar().ToString();
+
+            string query9 = $"SELECT coefTarif,kmPrice FROM t_Tarif WHERE idTarif = '{query4_resultTarifID}';";
+            MySqlCommand command9 = new MySqlCommand(query9, conn);
+            string query9_resultTarifID = command9.ExecuteScalar().ToString();
+
+            MySqlDataReader COEF_Date_reader = command9.ExecuteReader();
+            while (COEF_Date_reader.Read())
             {
-                GetListOrder();
-                MessageBox.Show("Заказ успешно добавлен.");
+                coef = Convert.ToDouble(COEF_Date_reader[0]);
+                kmprice = Convert.ToDouble(COEF_Date_reader[1]);
+
             }
-            //Иначе произошла какая то ошибка и покажем пользователю уведомление
-            else
-            {
-                MessageBox.Show("Произошла ошибка.", "Ошибка");
-            }
+            COEF_Date_reader.Close();
+            DateTime datetime = dateTimePicker1.Value;
+            string date = datetime.ToString("yyyy-MM-dd");
+            price = Convert.ToDouble(textBox1.Text) * coef * kmprice;
+            string queryINSERT = $"INSERT INTO t_Order (idDriver, idDisp, dateOrder, startAdr, endAdr, km, idClient, Price, idCar, idTarif) VALUES ('{query2_resultDriverID}','{query1_resultDispID}','{date}','{textBox2.Text}','{textBox3.Text}','{textBox1.Text}','{query3_resultClientID}','{price}','{query8_resultCarID}','{query4_resultTarifID}') ;";
+            MySqlCommand commandINSERT = new MySqlCommand(queryINSERT, conn);
+            commandINSERT.ExecuteNonQuery();
+            conn.Close();
+            reload_list();
+
+
 
         }
         public void GetComboBox5(string idMarka)
@@ -421,7 +424,7 @@ namespace WindowsFormsApp1
             {
                 conn.Close();
             }
-            
+
         }
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
@@ -433,7 +436,7 @@ namespace WindowsFormsApp1
             comboBox5.Text = "";
 
 
-         
+
             // остальные действия
         }
         public void GetComboBox6()
@@ -491,8 +494,103 @@ namespace WindowsFormsApp1
         {
 
         }
-    }
+        public bool DeleteOrder()
+        {
+            //определяем переменную, хранящую количество вставленных строк
+            int InsertCount = 0;
+            //Объявляем переменную храняющую результат операции
+            bool result = false;
+            // открываем соединение
+            conn.Open();
+            // запрос удаления данных
+            string query = $"DELETE FROM t_Order WHERE idOrder = '{id_selected_rows}'";
 
+            try
+            {
+                MySqlCommand command = new MySqlCommand(query, conn);
+
+                // выполняем запрос
+                InsertCount = command.ExecuteNonQuery();
+                dataGridView1.Rows.RemoveAt(Convert.ToInt32(index_rows5));
+
+            }
+            catch
+            {
+                InsertCount = 0;
+            }
+            finally
+            {
+                conn.Close();
+                if (InsertCount != 0)
+                {
+                    result = true;
+                    reload_list();
+                }
+            }
+            return result;
+
+        }
+
+        private void toolStripButton4_Click(object sender, EventArgs e)
+        {
+            string index_selected_rows;
+            //Индекс выбранной строки
+            index_selected_rows = dataGridView1.SelectedCells[0].RowIndex.ToString();
+            //ID конкретной записи в Базе данных, на основании индекса строки
+            id_selected_rows = dataGridView1.Rows[Convert.ToInt32(index_selected_rows)].Cells[0].Value.ToString();
+            dataGridView1.Rows.RemoveAt(Convert.ToInt32(index_rows5));
+            DeleteOrder();
+        }
+
+        private void dataGridView1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (!e.RowIndex.Equals(-1) && !e.ColumnIndex.Equals(-1) && e.Button.Equals(MouseButtons.Left))
+            {
+                dataGridView1.CurrentCell = dataGridView1[e.ColumnIndex, e.RowIndex];
+
+                dataGridView1.CurrentRow.Selected = true;
+
+                index_rows5 = dataGridView1.SelectedCells[0].RowIndex.ToString();
+                GetSelectedIDString();
+            }
+        }
+
+        private void toolStripTextBox1_TextChanged(object sender, EventArgs e)
+        {
+            string vybor = toolStripTextBox1.Text;
+            if (vybor != null)
+            {
+                
+                reload_list();
+            }
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+             reload_list();
+            if (toolStripTextBox1.Text != "")
+            {
+                reload_list();
+                for (int i = 0; i < dataGridView1.RowCount ; i++)
+                { // если в таблице больше одной записи (первая - это наименования столбцов)
+                    if (dataGridView1.RowCount > 1)
+                    {
+
+                        string QuanityValue = dataGridView1.Rows[i].Cells[0].Value.ToString();
+                        if (QuanityValue != toolStripTextBox1.Text)
+                        {
+                            dataGridView1.Rows.RemoveAt(i);
+                            i--;
+                        }
+                    }
+                    
+                }
+            }
+        }
     }
-    
+}
+
+
+
+
 
