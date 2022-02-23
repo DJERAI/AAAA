@@ -223,55 +223,52 @@ namespace WindowsFormsApp1
             }
 
         }
-        //public void GetComboBox3()
-        //{
-        //    //Формирование списка статусов
-        //    DataTable list_marka_table = new DataTable();
-        //    MySqlCommand list_marka_command = new MySqlCommand();
-        //    //Открываем соединение
-        //    conn.Open();
-        //    //Формируем столбцы для комбобокса списка ЦП
-        //    list_marka_table.Columns.Add(new DataColumn("idModel", System.Type.GetType("System.Int32")));
-        //    list_marka_table.Columns.Add(new DataColumn("idMarka", System.Type.GetType("System.String")));
-        //    list_marka_table.Columns.Add(new DataColumn("titleModel", System.Type.GetType("System.String")));
-        //    list_marka_table.Columns.Add(new DataColumn("titleMarks", System.Type.GetType("System.String")));
-        //    //Настройка видимости полей комбобокса
-        //    comboBox3.DataSource = list_marka_table;
-        //    comboBox3.DisplayMember = "titleModel";
-        //    comboBox3.DisplayMember = "titleMarks";
-        //    comboBox3.ValueMember = "idModel,idMarka";
-        //    //Формируем строку запроса на отображение списка статусов прав пользователя
-        //    string sql_list_model = "SELECT idModel, titleModel FROM t_Model; SELECT idMarka, titleMarks FROM t_Marka";
-        //    list_marka_command.CommandText = sql_list_model;
-        //    list_marka_command.Connection = conn;
-        //    //Формирование списка ЦП для combobox'a
-        //    MySqlDataReader list_model_reader;
-        //    try
-        //    {
-        //        //Инициализируем ридер
-        //        list_model_reader = list_marka_command.ExecuteReader();
-        //        while (list_model_reader.Read())
-        //        {
-        //            DataRow rowToAdd = list_marka_table.NewRow();
-        //            rowToAdd["idModel"] = Convert.ToInt32(list_model_reader[0]);
-        //            rowToAdd["titleModel"] = list_model_reader[1].ToString();
-        //            rowToAdd["idMarka"] = Convert.ToInt32(list_model_reader[2]);
-        //            rowToAdd["titleMarks"] = list_model_reader[3].ToString();
-        //            list_marka_table.Rows.Add(rowToAdd);
-        //        }
-        //        list_model_reader.Close();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show("Ошибка чтения списка ЦП \n\n" + ex, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //        Application.Exit();
-        //    }
+        public void GetComboBox1()
+        {
+            //Формирование списка статусов
+            DataTable list_marka_table = new DataTable();
+            MySqlCommand list_marka_command = new MySqlCommand();
+            //Открываем соединение
+            conn.Open();
+            //Формируем столбцы для комбобокса списка ЦП
+            list_marka_table.Columns.Add(new DataColumn("idMarka", System.Type.GetType("System.Int32")));
+            list_marka_table.Columns.Add(new DataColumn("titleMarks", System.Type.GetType("System.String")));
+            //Настройка видимости полей комбобокса
+            comboBox1.DataSource = list_marka_table;
+            comboBox1.DisplayMember = "titleMarks";
+            comboBox1.ValueMember = "idMarka";
+            //Формируем строку запроса на отображение списка статусов прав пользователя
+            string sql_list_model = "SELECT idMarka, titleMarks FROM t_Marka;SELECT NumberTS FROM t_Cars";
+            list_marka_command.CommandText = sql_list_model;
+            list_marka_command.Connection = conn;
+            //Формирование списка ЦП для combobox'a
+            MySqlDataReader list_model_reader;
+            try
+            {
+                //Инициализируем ридер
+                list_model_reader = list_marka_command.ExecuteReader();
+                while (list_model_reader.Read())
+                {
+                    DataRow rowToAdd = list_marka_table.NewRow();
+                    rowToAdd["idMarka"] = Convert.ToInt32(list_model_reader[0]);
+                    rowToAdd["titleMarks"] = list_model_reader[1].ToString();
+                    list_marka_table.Rows.Add(rowToAdd);
+                }
+                list_model_reader.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка чтения списка ЦП \n\n" + ex, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Application.Exit();
+            }
 
-        //    finally
-        //    {
-        //        conn.Close();
-        //    }
-            public void GetComboBox4()
+            finally
+            {
+                conn.Close();
+            }
+
+        }
+        public void GetComboBox4()
         {
             //Формирование списка статусов
             DataTable list_marka_table = new DataTable();
@@ -399,7 +396,68 @@ namespace WindowsFormsApp1
             }
 
         }
+        public void GetComboBox5(string idMarka)
+        {
+            //Формирование списка статусов
+            DataTable list_model_table = new DataTable();
+            MySqlCommand list_model_command = new MySqlCommand();
+            //Открываем соединение
+            conn.Open();
+            //Формируем столбцы для комбобокса списка ЦП
+            list_model_table.Columns.Add(new DataColumn("idModel", System.Type.GetType("System.Int32")));
+            list_model_table.Columns.Add(new DataColumn("titleModel", System.Type.GetType("System.String")));
+            //Настройка видимости полей комбобокса
+            comboBox2.DataSource = list_model_table;
+            comboBox2.DisplayMember = "titleModel";
+            comboBox2.ValueMember = "idModel";
+            //Формируем строку запроса на отображение списка статусов прав пользователя
+            string sql_list_users = $"SELECT idModel, titleModel FROM t_Model WHERE idMarka = {idMarka}";
+            list_model_command.CommandText = sql_list_users;
+            list_model_command.Connection = conn;
+            //Формирование списка ЦП для combobox'a
+            MySqlDataReader list_model_reader;
+            try
+            {
+                //Инициализируем ридер
+                list_model_reader = list_model_command.ExecuteReader();
+                while (list_model_reader.Read())
+                {
+                    DataRow rowToAdd = list_model_table.NewRow();
+                    rowToAdd["idModel"] = Convert.ToInt32(list_model_reader[0]);
+                    rowToAdd["titleModel"] = list_model_reader[1].ToString();
+                    list_model_table.Rows.Add(rowToAdd);
+                }
+                list_model_reader.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка чтения списка ЦП \n\n" + ex, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Application.Exit();
+            }
+            finally
+            {
+                conn.Close();
+            }
+            
+        }
 
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            comboBox3.Enabled = true;
+            //Заполнение Combobox2 теми подкатегориями, которые относятся к выбранной категории
+            GetComboBox5(comboBox3.SelectedValue.ToString());
+            //Установка пустой строки по умолчанию в ComboBox2
+            comboBox2.Text = "";
+
+
+            string vybor = comboBox1.SelectedItem.ToString();
+            if (vybor != null)
+            {
+                textBox1.Text = "";
+            }
+            else if (vybor == "2") ;
+            // остальные действия
+        }
     }
 
     }
